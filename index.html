@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Poster Uploader</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <h1>Gather Poster Image Uploader</h1>
+
+    <div class="container">
+        <form id="form" class="form">
+            <h2>Complete required fields and select images to upload</h2>
+            <div class="form__control">
+                <label for="spaceId">Space Id</label>
+                <input type="text" id="spaceId" placeholder="123abc">
+            </div>
+            <div class="form__control">
+                <label for="mapId">Map Id</label>
+                <input type="text" id="mapId" placeholder="456def">
+            </div>
+            <div class="upload__box">
+                <input class="box__file" type="file" name="files[]" id="file" data-multiple-caption="{count} files selected" multiple />
+                <label for="file"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>
+              </div>
+              <div class="box__uploading">Uploading…</div>
+              <div class="box__success">Done!</div>
+              <div class="box__error">Error! <span></span>
+            </div>
+            <button>Submit</button>
+        </form>
+    </div>
+
+</body>
+<script src="script.js"></script>
+</html>
