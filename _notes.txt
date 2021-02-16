@@ -1,0 +1,13 @@
+a Problem:
+the createRoom endpoint creates an entirely new space! we don't want that .. we were hoping to create a new room
+ - is there a way we can create a new room w/ an api call?
+ - if not then we need to use the setMap endpoint to add poster images to a room
+ - this was the original plan -> go back to this?
+    - if so, user would need to create a poster room(s) and also get the mapId
+    
+which leads us to Another Problem:
+user is going to need the spaceId and mapIds ... how do they get these??
+ -> is there some kind of 'info' call they can make that hands them back this stuff?
+
+
+

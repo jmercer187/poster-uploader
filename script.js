@@ -21,6 +21,8 @@
     step 2
         -> async POSTs to create the room(s) and get the mapId
             POST https://gather.town/api/createRoom
+            !!!!! CANT ACTUALLY DO THIS !!!!!
+            the createRoom endpoint actually creates /spaces/ not rooms w/in them
         -> build out the map object body(s) (excepting mapId)
             bunle together images, set up sizing, private spaces, etc
 
@@ -32,11 +34,55 @@
         
 */
 
+const apiKey = "P1pUCBjrFDJAzgp2";
+//const spaceId = "HHZcGPqIP2MXnxY5";
+
 const form = document.getElementById('form');
+const submit = document.getElementById('submitBtn');
 const spaceId = document.getElementById('spaceId');
 const mapId = document.getElementById('mapId');
+const files = document.getElementById('fileInput').files;
 
-// Functions
+let fileArray = [];
+
+// Validation Functions
+function checkIfFileExists(files){
+    if (files.length < 1){
+        alert("You must upload at least one poster image.");
+    }
+}
+
+function checkFileSizes(fileArray = files){
+    fileArray.forEach(file => {
+        let fileSize = Math.round(file.size / 1024);
+
+        if (fileSize >= 96) {
+            alert(
+                "File too Big, please select a file less than 4mb");
+        } else if (fileSize < 2048) {
+            alert(
+                "File too small, please select a file greater than 2mb");
+        }
+    });
+    
+    // for (const i = 0; i <= fi.files.length - 1; i++) {
+
+    //     const fsize = fi.files.item(i).size;
+    //     const file = Math.round((fsize / 1024));
+    //     // The size of the file.
+    //     if (file >= 96) {
+    //         alert(
+    //             "File too Big, please select a file less than 4mb");
+    //     } else if (file < 2048) {
+    //         alert(
+    //             "File too small, please select a file greater than 2mb");
+    //     } else {
+    //         document.getElementById('size').innerHTML = '<b>'
+    //         + file + '</b> KB';
+    //     }
+    // }
+}
+
 function setUpFetch(){
 
 }
@@ -47,7 +93,12 @@ function submitPosterImages(){
 
 
 // Event Listeners
-form.addEventListener('click', function(e){
+submit.addEventListener('click', function(e){
     //TODO add validation functionas for Ids; file type, size, and count(?)
+
+    checkIfFileExists(files);
+    checkFileSizes(files);
+    checkFileTypes(files);
+
     submitPosterImages();
 })

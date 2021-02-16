@@ -9,8 +9,6 @@
 </head>
 <body>
     <h1>Gather Poster Image Uploader</h1>
-    <p>This utility lets user create rooms in predefined Gather space that hold poster images. Specify how many rooms you want and then upload images for each room.</p>
-
     <div class="container">
         <form id="form" class="form">
             <h2>Complete required fields and select images to upload</h2>
@@ -23,9 +21,9 @@
                 <input type="text" id="mapId" placeholder="456def">
             </div>
             <div class="upload__box">
-                <input class="box__file" type="file" name="files[]" id="file" data-multiple-caption="{count} files selected" multiple />
+                <input class="box__file" type="file" name="files[]" id="fileInput" data-multiple-caption="{count} files selected" multiple />
             </div>
-            <button>Submit</button>
+            <button id="submitBtn">Submit</button>
         </form>
     </div>
 
