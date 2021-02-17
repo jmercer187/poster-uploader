@@ -11,18 +11,58 @@
     <h1>Gather Poster Image Uploader</h1>
     <div class="container">
         <form id="form" class="form">
+            
             <h2>Complete required fields and select images to upload</h2>
+            
             <div class="form__control">
                 <label for="spaceId">Space Id</label>
                 <input type="text" id="spaceId" placeholder="123abc">
             </div>
+            
             <div class="form__control">
                 <label for="mapId">Map Id</label>
                 <input type="text" id="mapId" placeholder="456def">
             </div>
+            
+            <div class="poster__container">
+                <label for="mapId">Select Private Space Tile Layout</label>
+                <div class="poster__image"><p>POSTER</p></div>
+
+                <div class="row">
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                </div>
+                <div class="row">
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                </div>
+                <div class="row">
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                </div>
+                <div class="row">
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                </div>
+
+            </div>
+            
             <div class="upload__box">
                 <input class="box__file" type="file" name="files[]" id="fileInput" data-multiple-caption="{count} files selected" multiple />
             </div>
+            
             <button id="submitBtn">Submit</button>
         </form>
     </div>

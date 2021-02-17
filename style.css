@@ -39,7 +39,7 @@ body {
     position: relative;
   }
   
-  .form__control label {
+  label {
     color: #777;
     display: block;
     margin-bottom: 5px;
@@ -59,11 +59,30 @@ body {
     border-color: #777;
   }
   
-  .box__dragndrop,
-  .box__uploading,
-  .box__success,
-  .box__error {
-    display: none;
+  .poster__image {
+    background-color: rgb(71, 71, 71);
+    height: 70px;
+    width: 120px;
+    margin: 15px 0;
+    transform: rotateX(-45deg);
+    box-shadow: 0 3px 10px rgba(32, 32, 32, 0.7);
+  }
+  
+  .poster__image p {
+    text-align: center;
+    color: #f0f0f0;
+  }
+
+  .tile {
+    background-color: rgb(71, 71, 71);
+    height: 40px;
+    width: 40px;
+    margin: 1px;
+    border-radius: 2px
+  }
+
+  .row {
+    display: flex;
   }
 
   .form button {
