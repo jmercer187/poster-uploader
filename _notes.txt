@@ -6,8 +6,8 @@ For setting the contents of a map
 **Takes**       JSON encoded, in body:
 
 - apiKey: Your api key
-- spaceId: Id of the space for the map you want to get the contents of
-- mapId: Id of the map within the space
+- spaceId: Id of the space for the map you want to get the contents of (from URL; everything after the app/)
+- mapId: Id of the map within the space (the name of the room from the map-maker)
 - mapContent: the new map content, in the same format as what is returned from getMap
 
 **Returns**     nothing
@@ -15,8 +15,7 @@ For setting the contents of a map
 neurIPS thing that does this
 https://github.com/Mini-Conf/Mini-Conf/tree/master/gather
 
-we create a map (room) for the space identified by user
-user can create multiple rooms and specify w/ images go to which room
+we take an existing room (or rooms) that a user provides and update the objects in that room to include their poster images 
 we need to find a way to separate preview images from poster images
     -> separate uplaods?
     -> have internal function that creates a preview for them?

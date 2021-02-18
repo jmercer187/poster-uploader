@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
-  
+* {
+  box-sizing: border-box;
+}
+
 body {
     background-color: #f9fafb;
     font-family: "Open Sans", sans-serif;
@@ -13,27 +16,53 @@ body {
     padding: 20px;
   }
 
-  .container {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    width: 800px;
-  }
-
   h1 {
     text-align: center;
   }
 
-  h2 {
+.count-container {
+  display: block;
+  background-color: #fff;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  width: 800px;
+  padding: 30px 40px;
+}
+
+  .count-container h2 {
     text-align: center;
+    margin: 10 0 0 20px;
+  }
+
+  .count-container input {
+    display: block;
+    border: 0;
+    background: transparent;
+    font-size: 26px;
+    text-align: center;
+    width: 100%;
     margin: 0 0 20px;
   }
   
+  .form-container {
+  display: none;
+  } 
+
+  .form-container.show-form {
+    display: block;
+    margin: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      width: 800px;
+  }
+
   .form {
     padding: 30px 40px;
   }
   
-  .form__control {
+  .form-control {
     margin-bottom: 10px;
     padding-bottom: 20px;
     position: relative;
@@ -45,7 +74,7 @@ body {
     margin-bottom: 5px;
   }
   
-  .form__control input {
+  .form-control input {
     border: 2px solid #f0f0f0;
     border-radius: 4px;
     display: block;
@@ -54,12 +83,12 @@ body {
     font-size: 14px;
   }
   
-  .form__control input:focus {
+  .form-control input:focus {
     outline: 0;
     border-color: #777;
   }
   
-  .poster__image {
+  .poster-image {
     background-color: rgb(71, 71, 71);
     height: 70px;
     width: 120px;
@@ -68,7 +97,7 @@ body {
     box-shadow: 0 3px 10px rgba(32, 32, 32, 0.7);
   }
   
-  .poster__image p {
+  .poster-image p {
     text-align: center;
     color: #f0f0f0;
   }
@@ -85,7 +114,7 @@ body {
     display: flex;
   }
 
-  .form button {
+  button {
     cursor: pointer;
     background-color: #3498db;
     border: 2px solid #3498db;

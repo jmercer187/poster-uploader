@@ -1,13 +1,21 @@
 const apiKey = "P1pUCBjrFDJAzgp2";
 //const spaceId = "HHZcGPqIP2MXnxY5";
 
+const showFormsBtn = document.getElementById('showRoomFormsBtn')
+const formCount = document.getElementById('formCount');
+const formContainer = document.getElementById('formContainer');
 const form = document.getElementById('form');
-const submit = document.getElementById('submitBtn');
+const submitBtn = document.getElementById('submitBtn');
 const spaceId = document.getElementById('spaceId');
 const mapId = document.getElementById('mapId');
 const files = document.getElementById('fileInput').files;
 
 let fileArray = [];
+
+function showForms(){
+    const count = formCount.value;
+    formContainer.classList.add('show-form');
+}
 
 // Validation Functions
 function checkIfFileExists(filesObject){ 
@@ -55,7 +63,9 @@ function submitPosterImages(){
 
 
 // Event Listeners
-submit.addEventListener('click', function(e){
+showFormsBtn.addEventListener('click', showForms)
+
+submitBtn.addEventListener('click', function(e){
 
     checkIfFileExists(files);
     checkFileSizesAndTypes(files);
