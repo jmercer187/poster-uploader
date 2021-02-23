@@ -8,7 +8,7 @@ const form = document.getElementById('form');
 const submitBtn = document.getElementById('submitBtn');
 const spaceId = document.getElementById('spaceId');
 const mapId = document.getElementById('mapId');
-const files = document.getElementById('fileInput').files;
+// const files = document.getElementById('fileInput').files;
 
 let fileArray = [];
 
@@ -67,8 +67,8 @@ showFormsBtn.addEventListener('click', showForms)
 
 submitBtn.addEventListener('click', function(e){
 
-    checkIfFileExists(files);
-    checkFileSizesAndTypes(files);
+ //   checkIfFileExists(files);
+ //   checkFileSizesAndTypes(files);
 
     submitPosterImages();
 })

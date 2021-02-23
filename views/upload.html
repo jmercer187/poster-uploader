@@ -17,59 +17,24 @@
     </div>
 
     <div class="form-container" id="formContainer">
-        <form id="form" class="form">
+        <form id="form" class="form" action="/upload" method="POST">
             
             <h2>Complete fields and select images to upload</h2>
             
             <div class="form-control">
                 <label for="spaceId">Space Id</label>
-                <input type="text" id="spaceId" placeholder="123abc">
+                <input type="text" name="spaceId" id="spaceId" placeholder="123abc">
             </div>
             
             <div class="form-control">
                 <label for="mapId">Map Id</label>
-                <input type="text" id="mapId" placeholder="456def">
-            </div>
-            
-            <div class="poster-container">
-                <label for="mapId">Select Private Space Tile Layout</label>
-                <div class="poster-image"><p>POSTER</p></div>
-
-                <div class="row">
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                </div>
-                <div class="row">
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                </div>
-                <div class="row">
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                </div>
-                <div class="row">
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                </div>
-
+                <input type="text" name="mapId" id="mapId" placeholder="456def">
             </div>
             
             <div class="upload-box">
-                <input class="box-file" type="file" name="files[]" id="fileInput" data-multiple-caption="{count} files selected" multiple />
+                <input class="box-file" type="file" name="files" id="fileInput" data-multiple-caption="{count} files selected" multiple />
             </div>
-            
+
             <button id="submitBtn">Submit</button>
         </form>
     </div>
