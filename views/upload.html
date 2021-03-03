@@ -17,7 +17,7 @@
     </div>
 
     <div class="form-container" id="formContainer">
-        <form id="form" class="form" action="/upload" method="POST">
+        <form id="form" class="form" action="/upload" method="POST" enctype="multipart/form-data">
             
             <h2>Complete fields and select images to upload</h2>
             
@@ -32,7 +32,7 @@
             </div>
             
             <div class="upload-box">
-                <input class="box-file" type="file" name="files" id="fileInput" data-multiple-caption="{count} files selected" multiple />
+                <input class="box-file" type="file" name="images" id="fileInput" data-multiple-caption="{count} files selected" multiple/>
             </div>
 
             <button id="submitBtn">Submit</button>

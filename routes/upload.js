@@ -11,7 +11,15 @@ router.get('/upload', (req, res) => {
 })
 
 router.post('/upload', (req, res) => {
-    console.log(req.body);
+
+    const spaceId = req.body.spaceId;
+    const mapId = req.body.mapId;
+    const imgArray = req.files;
+
+    if (imgArray.length < 1){ // means multer didn't let anything get past the validation and into the files array
+        res.redirect('/fail')
+        return;
+    }
 
     // pull out map and space id
 
