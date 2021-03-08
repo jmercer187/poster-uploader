@@ -8,13 +8,6 @@
     
 </head>
 <body>
-    
-    <div class="count-container">
-        <h1>Gather Poster Image Uploader</h1>
-        <h2>How many rooms would you like to create?</h2>
-        <input type="number" id="formCount" placeholder="1" value="1">
-        <button id="showRoomFormsBtn">Let's go!</button>
-    </div>
 
     <div class="form-container" id="formContainer">
         <form id="form" class="form" action="/upload" method="POST" enctype="multipart/form-data">
@@ -22,13 +15,18 @@
             <h2>Complete fields and select images to upload</h2>
             
             <div class="form-control">
+                <label for="apiKey">API Key</label>
+                <input type="text" name="apiKey" id="apiKey" placeholder="secretKey">
+            </div>
+            
+            <div class="form-control">
                 <label for="spaceId">Space Id</label>
-                <input type="text" name="spaceId" id="spaceId" placeholder="123abc">
+                <input type="text" name="spaceId" id="spaceId" placeholder="123abc\mySpace">
             </div>
             
             <div class="form-control">
                 <label for="mapId">Map Id</label>
-                <input type="text" name="mapId" id="mapId" placeholder="456def">
+                <input type="text" name="mapId" id="mapId" placeholder="poster-room">
             </div>
             
             <div class="upload-box">
@@ -42,5 +40,4 @@
         
 
 </body>
-<script src="/js/script.js"></script>
 </html>

@@ -1,0 +1,62 @@
+gather api reference: 
+https://www.notion.so/EXTERNAL-Gather-http-API-3bbf6c59325f40aca7ef5ce14c677444
+
+### POST https://gather.town/api/setMap
+For setting the contents of a map
+**Takes**       JSON encoded, in body:
+
+- apiKey: Your api key
+- spaceId: Id of the space for the map you want to get the contents of (from URL; everything after the app/)
+- mapId: Id of the map within the space (the name of the room from the map-maker)
+- mapContent: the new map content, in the same format as what is returned from getMap
+
+**Returns**     nothing
+
+neurIPS thing that does this
+https://github.com/Mini-Conf/Mini-Conf/tree/master/gather
+
+we take an existing room (or rooms) that a user provides and update the objects in that room to include their poster images 
+we need to find a way to separate preview images from poster images
+    -> separate uplaods?
+    -> have internal function that creates a preview for them?
+        ** this is probably easiest for user .. and also us too probably
+
+step 1
+    -> validate submission
+        - image type, file size, file count (50 max)
+            ** note accept PDFs, JPEGs, TIFs, and PNGs and then transform everything into PNGs
+            ** if I were smart I'd put the file type validation in the back end
+    -> validate spaceId (char min? anything else?)
+
+step 2
+    -> build out (async if we're letting them submit more than one) setRoom submission object
+    -> do some math to determine poster spacing and location
+    -> add in private space tiles (base this partly on user submission)
+
+step 3
+    -> async POSTs to set room data
+        POST https://gather.town/api/setMap
+    -> hand back response https codes per call as we get them back
+        plus any errors if we get them?
+
+
+QUESTIONS / PROBLEMS
+where to I get these things?
+- apiKey: user is gonna submit this
+    -> do we need to hold their hand in generating their API key?
+    -> can users have more than one in case they forget theres and need to generate a new one?
+- spaceId: user is gonna submit this
+    -> are they able to find this? ..this seems like a big one..
+- mapId: Id of the map within the space
+    -> same questions as spaceId
+- mapContent: 
+    -> what does the json going to gather need to look like?
+    -> can we /just/ send in the poster image stuff? or do we have to reset the entire room + the poster stuff?
+
+
+THOUGHTS
+had hoped we could create a new poster room using the stuff the user submitted
+the createRoom endpoint creates an entirely new space! we don't want that .. we were hoping to create a new room
+ - is there a way we can create a new room w/ an api call?
+apparently users can copy an existing room into their own space
+ - if a user could create a generic room that sits outside their space they wouldn't need an api key, or spaceId / mapId

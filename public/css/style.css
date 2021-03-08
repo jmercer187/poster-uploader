@@ -20,15 +20,15 @@ body {
     text-align: center;
   }
 
-.count-container {
-  display: block;
-  background-color: #fff;
-  margin: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  width: 800px;
-  padding: 30px 40px;
-}
+  .count-container {
+    display: block;
+    background-color: #fff;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    width: 800px;
+    padding: 30px 40px;
+  }
 
   .count-container h2 {
     text-align: center;
@@ -44,12 +44,9 @@ body {
     width: 100%;
     margin: 0 0 20px;
   }
-  
-  .form-container {
-  display: none;
-  } 
 
-  .form-container.show-form {
+
+  .form-container {
     display: block;
     margin: 10px;
       background-color: #fff;
