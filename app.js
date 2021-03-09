@@ -15,10 +15,10 @@ const app = express();
 // app.engine('hbs', expressHbs({ extname: '.hbs' }));
 // app.set('view engine', 'hbs');
 
-const imgStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads');
-    },
+const imgStorage = multer.memoryStorage({
+    // destination: (req, file, cb) => {
+    //     cb(null, 'uploads');
+    // },
     filename: (req, file, cb) => {
         cb(null, new Date().toISOString().replace(/:/g,"-") + '__' + file.originalname) // windows doesn't like having ":" in the file path name
     }
@@ -47,4 +47,4 @@ app.use((req, res) => {
         .sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
-app.listen(8080);
+app.listen(3000);

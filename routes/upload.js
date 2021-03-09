@@ -7,7 +7,7 @@ const rootDir = require('../util/path');
 
 const router = express.Router();
 
-async function getRoom(userKey, userSpace, userMap) {
+const getRoom = async(userKey, userSpace, userMap) => {
     try {
         const response = axios.get('https://gather.town/api/getMap', {
             params: {
@@ -17,13 +17,37 @@ async function getRoom(userKey, userSpace, userMap) {
             }
         })
 
-        console.log(response);
         return response;
 
     } catch (error) {
         res.redirect('/fail')
         return;
     }
+}
+
+const uploadImagesToStaging = async(images, userSpaceId) => {
+    let axiosArray = [];
+    let imageLinks = [];
+    Array.from(images).forEach(image =>{
+        
+        let newPromise = axios({
+            method: 'post',
+            url: 'https://staging.gather.town/api/uploadImage',
+            data: {
+                bytes: image.buffer,
+                spaceId: userSpaceId
+            }
+        })
+        
+        axiosArray.push(newPromise);
+    });
+    
+    axios
+        .all(axiosArray)
+        .then(axios.spread((...responses) => {
+            responses.forEach(res => imageLinks.push(res.data))
+        }))
+        .catch(error => console.log(error));
 }
 
 router.get('/upload', (req, res) => {
@@ -42,35 +66,18 @@ router.post('/upload', (req, res) => {
 
     if (imgArray.length < 1) { // means multer didn't let anything get past the validation and into the files array
         res.redirect('/fail')
-        console.log("bailed out in upload route")
+        console.log("bailed out in upload route -> no images in array")
         return;
     }
 
-    axios.get('https://gather.town/api/getMap', {
-            params: {
-                apiKey : apiKey,
-                spaceId : spaceId,
-                mapId : mapId
-            }
-        })
-        .then(function (response){
-            console.log("GET MAP got back: " + response.status);
-            console.log(response.data);
-        })
-        .catch(function (error){s
-            console.log("GET MAP got an error! " + error);
-        })
+    // make getRoom call to get all the room info && send images to gather storage and get image paths in response
+    let roomOriginal = getRoom(apiKey, spaceId, mapId);
+    let imageLinks = uploadImagesToStaging(imgArray, spaceId);
     
+    // create new poster objects, plug into objets array in from getRoom
 
-    // pull out map and space id
+    // call to setMap w/ updated information
 
-    // make getRoom call to get all the room info
-
-    // add in poster info and private spaces and also do it in a way that maintains symmetry and all tht (easier said than done...)
-
-    // actually do the gather town api call with the updated room info
-
-    // need to figure out how to do logic that dicates redirect to success or pass based on status code response from gather town api call
     res.redirect('/success')
 })
 
