@@ -14,24 +14,51 @@
             
             <h2>Complete fields and select images to upload</h2>
             
-            <div class="form-control">
+            <div class="form-control  form-control-txt">
                 <label for="apiKey">API Key</label>
                 <input type="text" name="apiKey" id="apiKey" placeholder="secretKey">
             </div>
             
-            <div class="form-control">
+            <div class="form-control form-control-txt">
                 <label for="spaceId">Space Id</label>
                 <input type="text" name="spaceId" id="spaceId" placeholder="123abc\mySpace">
             </div>
             
-            <div class="form-control">
+            <div class="form-control form-control-txt">
                 <label for="mapId">Map Id</label>
                 <input type="text" name="mapId" id="mapId" placeholder="poster-room">
             </div>
             
-            <div class="upload-box">
-                <input class="box-file" type="file" name="images" id="fileInput" data-multiple-caption="{count} files selected" multiple/>
+            <p>Replace existing images or add to existing images with this upload?</p>
+            
+            <div class="form-control form-control-radio">
+                <input type="radio" id="true" name="replaceAll" value="true">
+                <label for="replaceAll">Replace Any Existing Images</label>
             </div>
+            <div class="form-control form-control-radio">
+                <input type="radio" id="false" name="replaceAll" value="false">
+                <label for="addTo">Add Uploaded Images to the Room</label>
+            </div>
+
+            <p>Upload the preview and full images below. In order that the preview images and the full size images match, use the same prefix for each followed by a '__' double underscore.</p>
+            <p>For example loading this into Preview Images:</p> 
+            <p>1__aNicePreviewImg.png</p>
+            <p> would correspond to this loaded in Full Images:</p>
+            <p>1__aNiceFullSizeImg.png</p> 
+            <p>Use what you want as the identifying prefix .. just make sure the double underscore '__' is at the end of the identifying prefix, before the actual name of the image.</p>
+            <p>All images must be type .png and less than 3mb</p>
+
+            <div class="upload-box">
+                <label for="previewImg">Preview Images</label>
+                <input class="box-file" type="file" name="previewImages" id="previewImages" data-multiple-caption="{count} files selected" multiple/>
+            </div>
+
+            <div class="upload-box">
+                <label for="fullImg">Full Images</label>
+                <input class="box-file" type="file" name="fullImages" id="fullImages" data-multiple-caption="{count} files selected" multiple/>
+            </div>
+
+
 
             <button id="submitBtn">Submit</button>
         </form>

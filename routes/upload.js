@@ -7,13 +7,13 @@ const rootDir = require('../util/path');
 
 const router = express.Router();
 
-const getRoom = async(userKey, userSpace, userMap) => {
+const getRoom = async (userKey, userSpace, userMap) => {
     try {
         const response = axios.get('https://gather.town/api/getMap', {
             params: {
-                apiKey : userKey,
-                spaceId : userSpace,
-                mapId : userMap
+                apiKey: userKey,
+                spaceId: userSpace,
+                mapId: userMap
             }
         })
 
@@ -25,11 +25,11 @@ const getRoom = async(userKey, userSpace, userMap) => {
     }
 }
 
-const uploadImagesToStaging = async(images, userSpaceId) => {
+const uploadImagesToStaging = async (images, userSpaceId) => {
     let axiosArray = [];
     let imageLinks = [];
-    Array.from(images).forEach(image =>{
-        
+    Array.from(images).forEach(image => {
+
         let newPromise = axios({
             method: 'post',
             url: 'https://staging.gather.town/api/uploadImage',
@@ -38,10 +38,10 @@ const uploadImagesToStaging = async(images, userSpaceId) => {
                 spaceId: userSpaceId
             }
         })
-        
+
         axiosArray.push(newPromise);
     });
-    
+
     axios
         .all(axiosArray)
         .then(axios.spread((...responses) => {
@@ -59,6 +59,7 @@ router.post('/upload', (req, res) => {
     const apiKey = req.body.apiKey;
     const spaceId = req.body.spaceId;
     const mapId = req.body.mapId;
+    const replaceAll = req.body.replaceAll;
     const imgArray = req.files;
 
     console.log(req.body);
@@ -71,9 +72,9 @@ router.post('/upload', (req, res) => {
     }
 
     // make getRoom call to get all the room info && send images to gather storage and get image paths in response
-    let roomOriginal = getRoom(apiKey, spaceId, mapId);
-    let imageLinks = uploadImagesToStaging(imgArray, spaceId);
-    
+    // let roomOriginal = getRoom(apiKey, spaceId, mapId);
+    // let imageLinks = uploadImagesToStaging(imgArray, spaceId);
+
     // create new poster objects, plug into objets array in from getRoom
 
     // call to setMap w/ updated information
