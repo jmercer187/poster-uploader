@@ -40,25 +40,17 @@
                 <label for="addTo">Add Uploaded Images to the Room</label>
             </div>
 
-            <p>Upload the preview and full images below. In order that the preview images and the full size images match, use the same prefix for each followed by a '__' double underscore.</p>
-            <p>For example loading this into Preview Images:</p> 
-            <p>1__aNicePreviewImg.png</p>
-            <p> would correspond to this loaded in Full Images:</p>
-            <p>1__aNiceFullSizeImg.png</p> 
-            <p>Use what you want as the identifying prefix .. just make sure the double underscore '__' is at the end of the identifying prefix, before the actual name of the image.</p>
-            <p>All images must be type .png and less than 3mb</p>
+            <p>Use the following naming convention so that the images are uploaded in preview / full image pairs that you expect!</p> 
+            <p>[two digit number][dash][P or F][double underscore][image name]</p>
+            <p>Use the numbers to pair two imagest together and the P or F to designate preview image or the full image</p>
+            <p>For example these two files would be paired, with the first as the preview image and the second as the full image:</p>
+            <p>03-P__myPosterSmall.png and 03-F__myPoster.png</p> 
+            <p>Max upload is 100 images (50 preview / 50 full). All images must be type .png and less than 3mb</p>
 
             <div class="upload-box">
-                <label for="previewImg">Preview Images</label>
-                <input class="box-file" type="file" name="previewImages" id="previewImages" data-multiple-caption="{count} files selected" multiple/>
+                <label for="posterImg">Image Upload</label>
+                <input class="box-file" type="file" name="posterImg" id="posterImg" data-multiple-caption="{count} files selected" multiple/>
             </div>
-
-            <div class="upload-box">
-                <label for="fullImg">Full Images</label>
-                <input class="box-file" type="file" name="fullImages" id="fullImages" data-multiple-caption="{count} files selected" multiple/>
-            </div>
-
-
 
             <button id="submitBtn">Submit</button>
         </form>

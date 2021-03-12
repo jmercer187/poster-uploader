@@ -36,8 +36,7 @@ const imgFilter = (req, file, cb) => {
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ storage: imgStorage, fileFilter: imgFilter }).array('previewImages'));
-app.use(multer({ storage: imgStorage, fileFilter: imgFilter }).array('fullImages'));
+app.use(multer({ storage: imgStorage, fileFilter: imgFilter }).array('posterImg'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(uploadRoutes);
