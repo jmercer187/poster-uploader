@@ -1,0 +1,53 @@
+<%- include("includes/head.ejs") %>
+</head>
+<body>
+
+    <div class="form-container" id="formContainer">
+        <form id="form" class="form" action="/upload" method="POST" enctype="multipart/form-data">
+            
+            <h2>Complete fields and select images to upload</h2>
+            
+            <div class="form-control  form-control-txt">
+                <label for="apiKey">API Key</label>
+                <input type="text" name="apiKey" id="apiKey" placeholder="secretKey">
+            </div>
+            
+            <div class="form-control form-control-txt">
+                <label for="spaceId">Space Id</label>
+                <input type="text" name="spaceId" id="spaceId" placeholder="123abc\mySpace">
+            </div>
+            
+            <div class="form-control form-control-txt">
+                <label for="mapId">Map Id</label>
+                <input type="text" name="mapId" id="mapId" placeholder="poster-room">
+            </div>
+            
+            <p>Replace existing images or add to existing images with this upload?</p>
+            
+            <div class="form-control form-control-radio">
+                <input type="radio" id="true" name="replaceAll" value="true">
+                <label for="replaceAll">Replace Any Existing Images</label>
+            </div>
+            <div class="form-control form-control-radio">
+                <input type="radio" id="false" name="replaceAll" value="false">
+                <label for="addTo">Add Uploaded Images to the Room</label>
+            </div>
+
+            <p>Use the following naming convention so that the images are uploaded in preview / full image pairs that you expect!</p> 
+            <p>[two digit number][dash][P or F][double underscore][image name]</p>
+            <p>Use the numbers to pair two imagest together and the P or F to designate preview image or the full image</p>
+            <p>For example these two files would be paired, with the first as the preview image and the second as the full image:</p>
+            <p>03-P__myPosterSmall.png and 03-F__myPoster.png</p> 
+            <p>Max upload is 100 images (50 preview / 50 full). All images must be type .png and less than 3mb</p>
+
+            <div class="upload-box">
+                <label for="posterImg">Image Upload</label>
+                <input class="box-file" type="file" name="posterImg" id="posterImg" data-multiple-caption="{count} files selected" multiple/>
+            </div>
+
+            <button id="submitBtn">Submit</button>
+        </form>
+    </div>
+
+        
+<%- include("includes/end.ejs") %>

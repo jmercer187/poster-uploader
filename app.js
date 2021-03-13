@@ -3,17 +3,16 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-// const expressHbs = require('express-handlebars');
 
-const uploadRoutes = require('./routes/upload');
-const responseRoutes = require('./routes/response')
+const rts = require('./routes/rts');
+const errorController = require('./controllers/errors');
 
-console.log("whaddup");
 
+console.log("welcome to the jungle, where it's all fun and games");
 const app = express();
 
-// app.engine('hbs', expressHbs({ extname: '.hbs' }));
-// app.set('view engine', 'hbs');
+
+app.set('view engine', 'ejs');
 
 const imgStorage = multer.memoryStorage({
     // destination: (req, file, cb) => {
@@ -35,16 +34,13 @@ const imgFilter = (req, file, cb) => {
     }
 };
 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: imgStorage, fileFilter: imgFilter }).array('posterImg'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(uploadRoutes);
-app.use(responseRoutes);
+app.use(rts);
+app.use(errorController.get404);
 
-app.use((req, res) => {
-    res.status(404)
-        .sendFile(path.join(__dirname, 'views', '404.html'));
-});
 
 app.listen(3000);
