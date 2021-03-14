@@ -1,3 +1,6 @@
+const db = require('../database/mongoImages');
+const img = require('../models/image');
+
 exports.getUpload = (req, res) => {
     res.render('upload', { pageTitle: 'ejs is correctly'});
 };
@@ -8,19 +11,25 @@ exports.postUpload = (req, res) => {
     const spaceId = req.body.spaceId;
     const mapId = req.body.mapId;
     const replaceAll = req.body.replaceAll;
-    const imgArray = req.files;
+    const imageArray = [];
 
-    if (imgArray.length < 1) { // means multer didn't let anything get past the validation and into the files array
+    if (Array.from(req.files).length < 1) { // means multer didn't let anything get past the validation and into the files array
         res.redirect('/fail')
         console.log("bailed out in upload route -> no images in array")
         return;
     }
 
-    console.log(imgArray[0]);
+    Array.from(req.files).forEach(file => {      
+        console.log(file.originalname)
+        let img = {
+            "fileName": file.originalname,
+            "data": file.buffer
+        }
+        imageArray.push(img);
+    });
 
-    let imgBytes = imgArray[0].buffer;
-
-    console.log(imgBytes);
+    db.saveImages(imageArray);
+    
 
     // axios.post('https://staging.gather.town/api/uploadImage', {
     //     bytes: imgBytes,

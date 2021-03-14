@@ -6,7 +6,7 @@ const multer = require('multer');
 
 const rts = require('./routes/rts');
 const errorController = require('./controllers/errors');
-
+const mongoConnect = require('./util/database').mongoConnect;
 
 console.log("welcome to the jungle, where it's all fun and games");
 const app = express();
@@ -42,5 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(rts);
 app.use(errorController.get404);
 
+mongoConnect(() => {
+    app.listen(3000);
+})
 
-app.listen(3000);
