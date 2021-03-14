@@ -3,7 +3,7 @@ const getDb = require('../util/database').getDb;
 const saveImages = (images) => {
     const db = getDb();
     db.collection('images')
-        .insertMany([images])
+        .insertMany(images)
         .then(result =>
             console.log(result))
         .catch(err => {

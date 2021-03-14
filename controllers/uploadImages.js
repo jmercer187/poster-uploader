@@ -2,7 +2,7 @@ const db = require('../database/mongoImages');
 const img = require('../models/image');
 
 exports.getUpload = (req, res) => {
-    res.render('upload', { pageTitle: 'ejs is correctly'});
+    res.render('upload', { pageTitle: 'ejs is correctly' });
 };
 
 exports.postUpload = (req, res) => {
@@ -19,7 +19,7 @@ exports.postUpload = (req, res) => {
         return;
     }
 
-    Array.from(req.files).forEach(file => {      
+    Array.from(req.files).forEach(file => {
         console.log(file.originalname)
         let img = {
             "fileName": file.originalname,
@@ -28,8 +28,9 @@ exports.postUpload = (req, res) => {
         imageArray.push(img);
     });
 
+
     db.saveImages(imageArray);
-    
+
 
     // axios.post('https://staging.gather.town/api/uploadImage', {
     //     bytes: imgBytes,
