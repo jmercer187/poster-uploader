@@ -1,5 +1,6 @@
-const db = require('../database/mongoImages');
-const img = require('../models/image');
+const { Result } = require('express-validator');
+const roomSrvc = require('../service/roomSrvc');
+const imgSrvc = require('../service/stageImagesSrvc')
 
 exports.getUpload = (req, res) => {
     res.render('upload', { pageTitle: 'ejs is correctly' });
@@ -20,38 +21,23 @@ exports.postUpload = (req, res) => {
     }
 
     Array.from(req.files).forEach(file => {
-        console.log(file.originalname)
         let img = {
             "fileName": file.originalname,
             "data": file.buffer
         }
         imageArray.push(img);
     });
-
-
-    db.saveImages(imageArray);
-
-
-    // axios.post('https://staging.gather.town/api/uploadImage', {
-    //     bytes: imgBytes,
-    //     spaceId: spaceId
-    // })
-    // .then(function(response){
-    //     console.log(response);
-    // })
-    // .catch({funciton(error){
-    //     console.log(error)
-    // }})
-
-    // make getRoom call to get all the room info && send images to gather storage and get image paths in response
-    // Promise.all([
-    //         getRoom(apiKey, spaceId, mapId), 
-    //         uploadImagesToStaging(imgArray, spaceId)
-    //     ])
-    //     .then((results) => 
-    //         results.forEach((result) =>
-    //             console.log(result.value)
-    //         ));
+    
+    //make getRoom call to get all the room info && send images to gather storage and get image paths in response
+    Promise.all([
+            roomSrvc.getRoom(apiKey, spaceId, mapId), 
+            imgSrvc.returnImageLinksArray(imageArray, spaceId)
+        ])
+        .then(function(results) {
+            //results.forEach(result =>
+                console.log("promises kept!")
+            //);
+        });
 
 
 
@@ -61,54 +47,3 @@ exports.postUpload = (req, res) => {
 
     res.redirect('/success')
 };
-
-
-const getRoom = async (userKey, userSpace, userMap) => {
-    try {
-        const response = axios.get('https://gather.town/api/getMap', {
-            params: {
-                apiKey: userKey,
-                spaceId: userSpace,
-                mapId: userMap
-            }
-        })
-        return response;
-    } catch (error) {
-        res.redirect('/fail')
-        return;
-    }
-}
-
-const uploadImagesToStaging = async (images, userSpaceId) => {
-    let axiosArray = [];
-    let imageLinks = [];
-    Array.from(images).forEach(image => {
-
-        let newPromise = axios({
-            method: 'post',
-            url: 'https://staging.gather.town/api/uploadImage',
-            data: {
-                bytes: image.buffer,
-                spaceId: userSpaceId
-            }
-        })
-
-        axiosArray.push(newPromise);
-    });
-
-    try {
-        const responseArray = axios.all(axiosArray);
-        return responseArray;
-    } catch (error) {
-        res.redirect('/fail')
-        return;
-    }
-    // axios
-    //     .all(axiosArray)
-    //     .then(axios.spread((...responses) =>
-    //         responses.forEach(res => imageLinks.push(res.data))
-    //     ))
-    //     .catch(error => console.log(error));
-
-    // return imageLinks;
-}

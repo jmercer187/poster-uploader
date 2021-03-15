@@ -6,7 +6,7 @@ const multer = require('multer');
 
 const rts = require('./routes/rts');
 const errorController = require('./controllers/errors');
-const mongoConnect = require('./util/database').mongoConnect;
+const mongoConnect = require('./util/databaseConfig').mongoConnect;
 
 console.log("welcome to the jungle, where it's all fun and games");
 const app = express();
