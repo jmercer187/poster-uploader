@@ -6,7 +6,7 @@ const multer = require('multer');
 
 const rts = require('./routes/rts');
 const errorController = require('./controllers/errors');
-const mongoConnect = require('./util/databaseConfig').mongoConnect;
+//const mongoConnect = require('./util/databaseConfig').mongoConnect;
 
 console.log("welcome to the jungle, where it's all fun and games");
 const app = express();
@@ -24,9 +24,6 @@ const imgStorage = multer.memoryStorage({
 })
 
 const imgFilter = (req, file, cb) => {
-
-    console.log("file type: " + file.mimetype);
-
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png' || file.mimetype === 'image/tif' || file.mimetype === 'image/tiff' || file.mimetype === 'application/pdf') {
         cb(null, true);
     } else {
@@ -42,7 +39,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(rts);
 app.use(errorController.get404);
 
-mongoConnect(() => {
-    app.listen(3000);
-})
+app.listen(3000);
+
+// a relic from a more sophisticated age
+// mongoConnect(() => {
+//     app.listen(3000);
+// })
 

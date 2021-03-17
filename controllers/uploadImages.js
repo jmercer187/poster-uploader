@@ -2,6 +2,8 @@ const { Result } = require('express-validator');
 const roomSrvc = require('../service/roomSrvc');
 const imgSrvc = require('../service/stageImagesSrvc')
 
+const axios = require('axios');
+
 exports.getUpload = (req, res) => {
     res.render('upload', { pageTitle: 'ejs is correctly' });
 };
@@ -22,24 +24,23 @@ exports.postUpload = (req, res) => {
 
     Array.from(req.files).forEach(file => {
         let img = {
-            "fileName": file.originalname,
-            "data": file.buffer
+            fileName: file.originalname,
+            data: file.buffer
         }
         imageArray.push(img);
-    });
-    
+    });  
+
     //make getRoom call to get all the room info && send images to gather storage and get image paths in response
-    Promise.all([
+    Promise.resolve([
             roomSrvc.getRoom(apiKey, spaceId, mapId), 
             imgSrvc.returnImageLinksArray(imageArray, spaceId)
         ])
         .then(function(results) {
             //results.forEach(result =>
                 console.log("promises kept!")
+                console.log(results[1]);
             //);
         });
-
-
 
     // create new poster objects, plug into objets array in from getRoom
 
