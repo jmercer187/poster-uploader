@@ -13,6 +13,7 @@ const postImage = async(img, spaceId) => {
         return imgUrl;
     } catch (error){
         console.error('we have hit an error uploading ' + img.fileName);
+        error.data;
     }
 }
 
@@ -29,6 +30,7 @@ const returnImageLinksArray = async(images, spaceId) => {
         })
         .catch(error => {
             console.error('sending images to staging hit an error')
+            error.data;
         });
 
     return imgCallResults;

@@ -39,12 +39,16 @@
                 <label for="addTo">Add Uploaded Images to the Room</label>
             </div>
 
-            <p>Use the following naming convention so that the images are uploaded in preview / full image pairs that you expect!</p> 
+            <p>Use the following naming convention so that the images are uploaded in preview / display image pairs that you expect!</p> 
             <p>[two digit number][dash][P or D][double underscore][image name]</p>
             <p>Use the numbers to pair two imagest together and the P or F to designate preview image or the display image</p>
             <p>For example these two files would be paired, with the first as the preview image and the second as the display image:</p>
             <p>03-P__myPosterSmall.png and 03-D__myPoster.png</p> 
             <p>Max upload is 80 images (40 preview / 40 display). All images must be type .png and less than 3mb</p>
+
+            <% if(typeof fileError != 'undefined') { %>
+                <p style="color:red; font-size: 14px;"><%= fileError %></p>
+            <% } %>
 
             <div class="upload-box">
                 <label for="posterImg">Image Upload</label>
