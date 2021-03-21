@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
+:root {
+  --error-color: #e74c3c;
+}
+
+
 * {
   box-sizing: border-box;
 }
@@ -108,30 +113,11 @@ body {
     border: 6px solid #3498db;
   }
 
-  .poster-image {
-    background-color: rgb(71, 71, 71);
-    height: 70px;
-    width: 120px;
-    margin: 15px 0;
-    transform: rotateX(-45deg);
-    box-shadow: 0 3px 10px rgba(32, 32, 32, 0.7);
-  }
-  
-  .poster-image p {
-    text-align: center;
-    color: #f0f0f0;
-  }
-
-  .tile {
-    background-color: rgb(71, 71, 71);
-    height: 40px;
-    width: 40px;
-    margin: 1px;
-    border-radius: 2px
-  }
-
-  .row {
-    display: flex;
+  .form-control small {
+    color: var(--error-color);
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 
   button {
@@ -147,16 +133,13 @@ body {
     width: 100%;
   }
 
-  footer {
+  .footer {
     width:100%;
-    height:10%;
-    position:absolute;
-    bottom:0;
-    left:0;
+    height:25px;
     background-color:rgba(32, 32, 32, 0.7);
   }
 
-  footer p {
+  .footer p {
     text-align: right;
     font-size: 11;
     padding: 10px;  

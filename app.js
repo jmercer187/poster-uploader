@@ -1,7 +1,6 @@
 const path = require('path');
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const multer = require('multer');
 
 const rts = require('./routes/rts');
@@ -19,7 +18,7 @@ const imgStorage = multer.memoryStorage({
     //     cb(null, 'uploads');
     // },
     filename: (req, file, cb) => {
-        cb(null, new Date().toISOString().replace(/:/g, "-") + '__' + file.originalname) // windows doesn't like having ":" in the file path name
+        cb(null, new Date().toISOString().replace(/:/g, "-") + '+!+' + file.originalname) // windows doesn't like having ":" in the file path name
     }
 })
 
@@ -31,8 +30,6 @@ const imgFilter = (req, file, cb) => {
     }
 };
 
-
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: imgStorage, fileFilter: imgFilter }).array('posterImg'));
 app.use(express.static(path.join(__dirname, 'public')));
 

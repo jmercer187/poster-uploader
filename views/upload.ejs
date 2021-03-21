@@ -7,6 +7,12 @@
             
             <h2>Complete fields and select images to upload</h2>
             
+            <% if(typeof alert != 'undefined') { %>
+                <% alert.forEach(function(error) { %>
+                    <p style="color:red; font-size: 14px;"><%= error.msg %></p>
+                <% }) %>
+            <% } %>
+
             <div class="form-control  form-control-txt">
                 <label for="apiKey">API Key</label>
                 <input type="text" name="apiKey" id="apiKey" placeholder="secretKey">
@@ -25,7 +31,7 @@
             <p>Replace existing images or add to existing images with this upload?</p>
             
             <div class="form-control form-control-radio">
-                <input type="radio" id="true" name="replaceAll" value="true">
+                <input type="radio" id="true" name="replaceAll" value="true" checked>
                 <label for="replaceAll">Replace Any Existing Images</label>
             </div>
             <div class="form-control form-control-radio">

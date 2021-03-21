@@ -1,0 +1,34 @@
+// find all of the xy coords we can put a poster
+
+1) cut two squares off each side of the room, use this smaller to set our xy coords for poster objects (probably easier to work w/ space starting at 1???)
+    -> doing this to create border space
+2) determine how many poster objects we can fit in this space
+    -> poster object itself is 3x5
+    -> need to include at min 2 squares on either side of it (except outer most which only need buffer space on the inward facing side)
+    -> need to include at min 2 squares on top or bottom
+
+// re-order that list so it starts in the center and works out
+// assign coords based on that list
+
+
+maybe actually take one of each of the 4 sides
+then find how many poster obects that are 5x7 can fit in each axis without breaking the walls
+use this number of total objects to find most equal spacing along each axis
+
+
+36x34 room
+usuable size is 34x32
+x axis can fit 35/7 6 entire objects
+y axis can fit 32/9 4 entire objects
+
+this gets tricky... ok let's walk through it a bit
+    - place objects extreme outsides -> 1 at x1 and 2 at x30
+    - then get new width of available objects -> now have space of 24
+    - modulo 24 x 5 -> get remainder of tiles we have on the x axis that we can use as padding between our remaining objects
+    - remainder is going to be 4, 3, 2, or 1
+    - need to take that remainder and divide it up among the remaining objects, so they can each have some spacing
+    - take number of objects and divide the remainder amongst them
+        -> this really only gets tricky for when there are == or fewer objects than extra tiles in the remainder
+        -> if there are more objects than extra tiles, give them to the outer most objects
+
+    
