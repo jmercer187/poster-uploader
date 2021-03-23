@@ -8,13 +8,13 @@ const updtRmSrvc = require('../service/updateRoomSrvc');
 const pageTitle = 'Poster Uploader'
 
 const filesNamesDoNotFollowPrescribedStructure = (files) => {
-    const regex = /^\d{2}-(F|P)__/;
+    const regex = new RegExp('^\\d{2}-(P|D)__.+');
     Array.from(files).forEach(file => {
-        if (files.match(regex)){
-            return false;
+        if (regex.test(file.originalname)!==true){
+            return true;
         }
     });
-    return true;
+    return false;
 }
 
 exports.getUpload = (req, res) => {
@@ -47,7 +47,7 @@ exports.postUpload = (req, res) => {
             fileError
         })
         return;
-    } else if (filesNamesDoNotFollowPrescribedStructure(req.files)) {
+    } else if (filesNamesDoNotFollowPrescribedStructure(req.files)===true) {
         const fileError = "File names do not follow the prescribed strucutre ... please make sure file names follow pattern in example";
         res.render('upload', {
             pageTitle,
@@ -72,20 +72,47 @@ exports.postUpload = (req, res) => {
 
     Promise.all([
             //make getRoom call to get current room info
-            roomSrvc.getRoom(apiKey, spaceId, mapId), 
+            roomSrvc.getRoom(apiKey, spaceId, mapId)
+                // TODO this error handling doesn't actually work??? need to figure out how to actually get the error body message back to ui
+                .catch(error => {
+                    alert = ["hit an error in getRoom", error.response.data]
+                    console.log(alert);
+                    res.render('upload', {
+                        pageTitle,
+                        alert
+                    })
+                    return;
+                }), 
             //send images to gather storage and get image paths in response
             imgSrvc.returnImageLinksArray(imageArray, spaceId)
+                .catch(error => {
+                    alert = ["hit an error in returnImageLinksArray", error.response.data]
+                    console.log(alert);
+                    res.render('upload', {
+                        pageTitle,
+                        alert
+                    })
+                    return;
+                }), 
         ])
         .then(function(results) {
             // create new poster objects, plug into objets array in from getRoom
-            let updatedRoom = updtRmSrvc(results[0], results[1], replaceAll);
+            let updatedRoom = updtRmSrvc.updateRoom(results[0], results[1], replaceAll);
             // post to setMap w/ updated information
-            roomSrvc.postRoom(apiKey, spaceId, mapId, updatedRoom);
+            roomSrvc.postRoom(apiKey, spaceId, mapId, updatedRoom)
+                .catch(error => {
+                    alert = ["hit a server error", error.response.data]
+                    console.log(alert);
+                    res.render('upload', {
+                        pageTitle,
+                        alert
+                    })
+                    return;
+                }),
             res.redirect('/success')
         })
         .catch(error => {
-            console.error("an error was encountered", error);
+            console.error("an error was encountered" + error);
         });
 
-    
 };

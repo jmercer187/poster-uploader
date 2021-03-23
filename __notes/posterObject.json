@@ -1,0 +1,17 @@
+{
+    "scale": 1,
+    "distThreshold": "1",
+    "x": 34,
+    "y": 3,
+    "height": 5,
+    "width": 3,
+    "offsetY": 0,
+    "offsetX": 0,
+    "type": 2,
+    "highlighted": "https://cdn.gather.town/v0/b/gather-town.appspot.com/o/internal-dashboard-upload%2F6VUr8JLqIv8wwwcN?alt=media&token=f3f964b8-9c3a-43e3-b117-5ea34fa84f14",
+    "normal": "https://cdn.gather.town/v0/b/gather-town.appspot.com/o/internal-dashboard-upload%2FejHc6XcuBIJE6GTS?alt=media&token=8c892a6f-da9c-4161-a1d8-ca128db4d373",
+    "properties": {
+        "preview": "https://cdn.gather.town/v0/b/gather-town-dev.appspot.com/o/assets%2F46a007a2-d124-47a7-a1f9-0b771393eac4?alt=media&token=350e542e-a4a9-4951-b5a9-742f226c0d96",
+        "image": "https://cdn.gather.town/v0/b/gather-town-dev.appspot.com/o/assets%2F46a007a2-d124-47a7-a1f9-0b771393eac4?alt=media&token=350e542e-a4a9-4951-b5a9-742f226c0d96"
+    }
+}
