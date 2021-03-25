@@ -4,6 +4,28 @@ const compareNumbers = (a, b) => {
     return a - b;
   }
 
+const pullOutDoorObjects = (objects, roomX, roomY) => {
+    const probablyADoor = []
+    for (i=0; i < objects.length; i++){
+        // this isn't redundant .. but assuming any object placed against an outer edge is a door
+        let object = objects[i];
+        if (object.x === 0 || 
+            object.x === 1 ||
+            object.x === roomX ||
+            object.x === roomX - 1||
+            object.x === roomX - 2||
+            object.y === 0 ||
+            object.y === 1 ||
+            object.y == roomY ||
+            object.y == roomY - 1 ||
+            object.y == roomY -2 ){
+                probablyADoor.push(object)
+            } 
+    }
+
+    return probablyADoor;
+}
+
 const getCoordsArray = (roomX, roomY) => {
     // poster object 5 tiles wide (3 for poster on on either side of spacing)
     // poster object 7 tiles tall (2 for poster, 3 for private space, 1 top and bottom for spacing)
@@ -143,11 +165,11 @@ const builtUpdatedRoomSpacesArray = (updatedObjects) => {
 const updateRoom = (room, images, replaceExistingImages) => {
     const roomX = room.dimensions[0];
     const roomY = room.dimensions[1];
-    const objects = room.objects;
+    let objects = room.objects;
 
-    // TODO: do this!!!
-    // want to keep any door objects in place so people can find the portal tiles
-    // const doors = pullOutDoorObjects(objects);
+    // put door objects on ice so we don't lose / rearrange them and people can find their portal tiles
+    const doors = pullOutDoorObjects(objects, roomX, roomY);
+    objects = objects.filter((obj) => !doors.includes(obj));
 
     if (replaceExistingImages === 'true') { 
         objects = []; 
@@ -170,7 +192,10 @@ const updateRoom = (room, images, replaceExistingImages) => {
     // add in private spaces for each poster object we've got
     const updatedSpaces = builtUpdatedRoomSpacesArray(updatedPosterObjectArray);
 
-    room.objects = updatedPosterObjectArray;
+    // add the doors back in
+    const allObjects = updatedPosterObjectArray.concat(doors);
+
+    room.objects = allObjects;
     room.spaces = updatedSpaces;
 
     return room;
