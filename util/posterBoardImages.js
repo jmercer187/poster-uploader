@@ -1,4 +1,4 @@
-// the images for the poster board objects already exist can maybe use them???
+// HACKY TEMPORARY SOLVE these images already exist in this space so can use these for now
 
 const normal = [
     "https://cdn.gather.town/v0/b/gather-town.appspot.com/o/internal-dashboard-upload%2FejHc6XcuBIJE6GTS?alt=media&token=8c892a6f-da9c-4161-a1d8-ca128db4d373",

@@ -14,6 +14,9 @@ const postImage = async(img, spaceId) => {
 
 const returnImageLinksArray = async(images, spaceId) => {  
     axiosPromiseArray = [];
+    
+    //TODO: need to stage poster sprites and get URLs for those as well ... that'd probably happen around here?
+    
     Array.from(images).forEach(img => {
         let axiosPromise = postImage(img, spaceId);
         axiosPromiseArray.push(axiosPromise);

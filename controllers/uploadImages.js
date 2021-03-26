@@ -24,7 +24,7 @@ exports.getUpload = (req, res) => {
 exports.postUpload = (req, res) => {
     
     const errors = validationResult(req);
-    // get this out of the controller and into a validation file
+    // TODO: get this out of the controller and into a validation file
     if(!errors.isEmpty()) {
         const alert = errors.array()
         console.log('bailed out in upload post -> failed form validation');
@@ -62,6 +62,7 @@ exports.postUpload = (req, res) => {
     const replaceAll = req.body.replaceAll;
     const imageArray = [];
 
+    // TODO: big value add if we can convert PDFs to png files
     Array.from(req.files).forEach(file => {
         let img = {
             fileName: file.originalname,
@@ -73,7 +74,7 @@ exports.postUpload = (req, res) => {
     Promise.all([
             //make getRoom call to get current room info
             roomSrvc.getRoom(apiKey, spaceId, mapId)
-                // TODO this error handling doesn't actually work??? need to figure out how to actually get the error body message back to ui
+                // !!! TODO !!! this error handling doesn't actually work.. need to do some reading and figure out how to actually get the error body message back to ui
                 .catch(error => {
                     alert = ["hit an error in getRoom", error.response.data]
                     console.log(alert);
@@ -85,6 +86,7 @@ exports.postUpload = (req, res) => {
                 }), 
             //send images to gather storage and get image paths in response
             imgSrvc.returnImageLinksArray(imageArray, spaceId)
+                // TODO: same with this
                 .catch(error => {
                     alert = ["hit an error in returnImageLinksArray", error.response.data]
                     console.log(alert);
@@ -100,6 +102,7 @@ exports.postUpload = (req, res) => {
             let updatedRoom = updtRmSrvc.updateRoom(results[0], results[1], replaceAll);
             // post to setMap w/ updated information
             roomSrvc.postRoom(apiKey, spaceId, mapId, updatedRoom)
+                // TODO: and this
                 .catch(error => {
                     alert = ["hit a server error", error.response.data]
                     console.log(alert);

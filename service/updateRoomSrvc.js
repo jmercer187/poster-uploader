@@ -1,13 +1,26 @@
+const atob = require('atob');
+const btoa = require('btoa');
+
 const imageUtil = require('../util/posterBoardImages')
 
 const compareNumbers = (a, b) => {
     return a - b;
   }
 
+const base64ToHex = (str) => {
+    const raw = atob(str);
+    let result = '';
+    for (let i = 0; i < raw.length; i++) {
+      const hex = raw.charCodeAt(i).toString(16);
+      result += (hex.length === 2 ? hex : '0' + hex);
+    }
+    return result.toUpperCase();
+  }
+
 const pullOutDoorObjects = (objects, roomX, roomY) => {
     const probablyADoor = []
     for (i=0; i < objects.length; i++){
-        // this isn't redundant .. but assuming any object placed against an outer edge is a door
+        // this isn't robust .. but assuming any object placed on or near an outer edge is a door
         let object = objects[i];
         if (object.x === 0 || 
             object.x === 1 ||
@@ -135,6 +148,35 @@ const buildUpdatedRoomObjectsArray = (currentObjects, images) => {
     }
 }
 
+const updateCollisionsString = (posters, collisionString, roomX, roomY) => {
+    // let's get the base64 into a hexadecimal
+    let hexdString = base64ToHex(collisionString);
+
+    // now we've got a big string of 0s and 1s .. break it into a list of lists so we have ourselves a grid
+    let yAxis = [];
+    for (i=0; i < roomY; i++){
+        let sub = hexdString.substring(i*roomX, i*roomX+roomX);
+        yAxis.push(sub);
+    }
+    let rows = [];
+    for (i=0; i < yAxis.length; i++){
+        let rowString = yAxis[i];
+        let row = [];
+        for (j=0; j < roomX; j++){
+            let sub = rowString.substring(j*2, j*2+2);
+            row.push(sub);
+        }
+        rows.push(row);
+    }
+
+    // wipe out any impassible tiles that may exist inside of the room; from (2,2) to (roomX-2,roomY-2) everything needs to be 00
+
+    // now that we have our clean grid, iterate through our list of posters and use the xy coords to place a 2x3 impassible tile (switch the 00s to 01s)
+
+    // convert matrix back into a single string and base64 encode it
+
+}
+
 const builtUpdatedRoomSpacesArray = (updatedObjects) => {
     const spaces = []
     for (i=0; i < updatedObjects.length; i++) {
@@ -167,7 +209,7 @@ const updateRoom = (room, images, replaceExistingImages) => {
     const roomY = room.dimensions[1];
     let objects = room.objects;
 
-    // put door objects on ice so we don't lose / rearrange them and people can find their portal tiles
+    // put door sprites on ice so we don't lose / rearrange them and people can find their portal tiles
     const doors = pullOutDoorObjects(objects, roomX, roomY);
     objects = objects.filter((obj) => !doors.includes(obj));
 
@@ -189,14 +231,19 @@ const updateRoom = (room, images, replaceExistingImages) => {
         object.y = coord.y;
     }
 
+    // update the collisions array based on the new poster objects we've added
+    // TODO : finish this
+    //const updatedCollisions = updateCollisionsString(updatedPosterObjectArray, room.collisions, roomX, roomY);
+
     // add in private spaces for each poster object we've got
     const updatedSpaces = builtUpdatedRoomSpacesArray(updatedPosterObjectArray);
 
-    // add the doors back in
+    // add the door sprites back in
     const allObjects = updatedPosterObjectArray.concat(doors);
 
     room.objects = allObjects;
     room.spaces = updatedSpaces;
+    room.collisions = updatedCollisions;
 
     return room;
 }
