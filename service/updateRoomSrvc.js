@@ -1,20 +1,9 @@
 const atob = require('atob');
-const btoa = require('btoa');
 
 const imageUtil = require('../util/posterBoardImages')
 
 const compareNumbers = (a, b) => {
     return a - b;
-  }
-
-const base64ToHex = (str) => {
-    const raw = atob(str);
-    let result = '';
-    for (let i = 0; i < raw.length; i++) {
-      const hex = raw.charCodeAt(i).toString(16);
-      result += (hex.length === 2 ? hex : '0' + hex);
-    }
-    return result.toUpperCase();
   }
 
 const pullOutDoorObjects = (objects, roomX, roomY) => {
@@ -148,33 +137,79 @@ const buildUpdatedRoomObjectsArray = (currentObjects, images) => {
     }
 }
 
-const updateCollisionsString = (posters, collisionString, roomX, roomY) => {
-    // let's get the base64 into a hexadecimal
-    let hexdString = base64ToHex(collisionString);
-
-    // now we've got a big string of 0s and 1s .. break it into a list of lists so we have ourselves a grid
-    let yAxis = [];
-    for (i=0; i < roomY; i++){
-        let sub = hexdString.substring(i*roomX, i*roomX+roomX);
-        yAxis.push(sub);
+const isBorder = (x,y,roomX,roomY) => {
+    if ((y===1 && x > 0 && x < roomX-1) ||
+        (y===roomY-2 && x > 0 && x < roomX-1) ||
+        (x===1 && y > 0 && y < roomY-1) ||
+        (x===roomX-2 && y > 0 && y < roomY-1)){            
+        return true;
+    } else {           
+        return false;
     }
-    let rows = [];
-    for (i=0; i < yAxis.length; i++){
-        let rowString = yAxis[i];
-        let row = [];
-        for (j=0; j < roomX; j++){
-            let sub = rowString.substring(j*2, j*2+2);
-            row.push(sub);
+}
+
+const isImpassible = (x,y,objectCoords) => {
+    for(i=0;i<objectCoords.length;i++){
+        if (objectCoords[i].x===x && objectCoords[i].y===y){
+            return true;
         }
-        rows.push(row);
+    }
+    return false;
+}
+
+const buildOutPosterTiles = (posterObjects) => {
+    fullPosterCoords = []
+
+    for (i=0;i<posterObjects.length;i++){
+        let origX = posterObjects[i].x
+        let origY = posterObjects[i].y
+
+        for (j=0;j<3;j++){
+            let coord = {x:origX+j, y:origY}
+            fullPosterCoords.push(coord)
+        }
+        for (j=0;j<3;j++){
+            let coord = {x:origX+j, y:origY+1}
+            fullPosterCoords.push(coord)
+        }
     }
 
-    // wipe out any impassible tiles that may exist inside of the room; from (2,2) to (roomX-2,roomY-2) everything needs to be 00
+    return fullPosterCoords
+}
 
-    // now that we have our clean grid, iterate through our list of posters and use the xy coords to place a 2x3 impassible tile (switch the 00s to 01s)
+const getPortalCoords = (portalObjects) => {
+    portalCoords = []
+    for (i=0;i<portalObjects.length;i++){
+        let coord = {x:portalObjects[i].x, y:portalObjects[i].y}
+        portalCoords.push(coord)
+    }
+    return portalCoords;
+}
 
-    // convert matrix back into a single string and base64 encode it
+const buildNewCollisionsString = (posters, portals, roomX, roomY) => {
+    portalCoords = getPortalCoords(portals)
+    posterCoords = buildOutPosterTiles(posters)
 
+    let byteMap = []
+
+    for (y=0; y< roomY; y++){
+        for (x=0; x<roomX; x++){
+            // build the walls
+            // note - have observed that gather rooms put the impassible boundary one tile in from the edge .. so replicating that behavior)
+            if (isBorder(x,y,roomX,roomY) &&
+                !isImpassible(x,y,portalCoords)){            
+                byteMap.push(0x01)
+            // build impassible tiles for poster board images
+            } else if (isImpassible(x,y,posterCoords)){
+                byteMap.push(0x01)
+            // everything else is free to move about the cabin
+            } else {           
+                byteMap.push(0x00)
+            }
+        }
+    }
+
+    return Buffer.from(byteMap).toString('base64')
 }
 
 const builtUpdatedRoomSpacesArray = (updatedObjects) => {
@@ -232,8 +267,8 @@ const updateRoom = (room, images, replaceExistingImages) => {
     }
 
     // update the collisions array based on the new poster objects we've added
-    // TODO : finish this
-    //const updatedCollisions = updateCollisionsString(updatedPosterObjectArray, room.collisions, roomX, roomY);
+    const updatedCollisions = buildNewCollisionsString(updatedPosterObjectArray, room.portals, roomX, roomY);
+    console.log(updatedCollisions)
 
     // add in private spaces for each poster object we've got
     const updatedSpaces = builtUpdatedRoomSpacesArray(updatedPosterObjectArray);
