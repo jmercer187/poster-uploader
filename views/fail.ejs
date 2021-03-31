@@ -2,5 +2,10 @@
 </head>
 <body>
     <h1>Upload Fail :( :( :(</h1>
+    <h3>Something mysterious and unexpected happened...</h3>
+
+    <% if(typeof errorMessage != 'undefined') { %>
+        <p style="color:red; font-size: 14px;"><%= errorMessage %></p>
+    <% } %>
 
 <%- include("includes/end.ejs") %>

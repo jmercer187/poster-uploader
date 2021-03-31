@@ -1,5 +1,3 @@
-const atob = require('atob');
-
 const imageUtil = require('../util/posterBoardImages')
 
 const compareNumbers = (a, b) => {

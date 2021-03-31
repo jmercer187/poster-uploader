@@ -74,48 +74,50 @@ exports.postUpload = (req, res) => {
     Promise.all([
             //make getRoom call to get current room info
             roomSrvc.getRoom(apiKey, spaceId, mapId)
-                // !!! TODO !!! this error handling doesn't actually work.. need to do some reading and figure out how to actually get the error body message back to ui
                 .catch(error => {
-                    alert = ["hit an error in getRoom", error.response.data]
+                    alert =  error.response.data
                     console.log(alert);
-                    res.render('upload', {
-                        pageTitle,
-                        alert
-                    })
-                    return;
+                    throw new Error(alert);
                 }), 
             //send images to gather storage and get image paths in response
             imgSrvc.returnImageLinksArray(imageArray, spaceId)
-                // TODO: same with this
                 .catch(error => {
-                    alert = ["hit an error in returnImageLinksArray", error.response.data]
+                    alert = error.response.data
                     console.log(alert);
-                    res.render('upload', {
-                        pageTitle,
-                        alert
-                    })
-                    return;
+                    throw new Error(alert);
                 }), 
         ])
         .then(function(results) {
             // create new poster objects, plug into objets array in from getRoom
-            let updatedRoom = updtRmSrvc.updateRoom(results[0], results[1], replaceAll);
+            let updatedRoom = null;
+            try { 
+                updatedRoom = updtRmSrvc.updateRoom(results[0], results[1], replaceAll);
+            } catch (err) {
+                console.log(err)
+                res.render('fail', {
+                    pageTitle: "Oh no",
+                    errorMessage: err
+                })
+                return;
+            }
+            
             // post to setMap w/ updated information
             roomSrvc.postRoom(apiKey, spaceId, mapId, updatedRoom)
-                // TODO: and this
                 .catch(error => {
-                    alert = ["hit a server error", error.response.data]
+                    alert = error.response.data
                     console.log(alert);
-                    res.render('upload', {
-                        pageTitle,
-                        alert
-                    })
-                    return;
+                    throw new Error(alert);
                 }),
             res.redirect('/success')
         })
         .catch(error => {
             console.error("an error was encountered" + error);
+            const alert = [{msg: error}]
+            res.render('upload', {
+                pageTitle,
+                alert
+            })
+            return;
         });
 
 };
