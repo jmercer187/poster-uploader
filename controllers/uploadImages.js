@@ -18,11 +18,30 @@ const filesNamesDoNotFollowPrescribedStructure = (files) => {
 }
 
 exports.getUpload = (req, res) => {
-    res.render('upload', { pageTitle });
+    res.render('upload', { 
+        pageTitle,
+        oldInput: {
+            apiKey: "",
+            spaceId: "",
+            mapId: ""
+        }
+     });
 };
 
 exports.postUpload = (req, res) => {
     
+    const apiKey = req.body.apiKey;
+    const spaceId = req.body.spaceId;
+    const mapId = req.body.mapId;
+    const replaceAll = req.body.replaceAll;
+    const imageArray = [];
+
+    let oldInput = {
+        apiKey: apiKey,
+        spaceId: spaceId,
+        mapId: mapId
+    }
+
     const errors = validationResult(req);
     // TODO: get this out of the controller and into a validation file
     if(!errors.isEmpty()) {
@@ -30,37 +49,43 @@ exports.postUpload = (req, res) => {
         console.log('bailed out in upload post -> failed form validation');
         res.render('upload', {
             pageTitle,
-            alert
+            alert,
+            oldInput
         })
         return;
     } else if (Array.from(req.files).length < 1) { // multer didn't let anything get past the validation and into the files array
         const fileError = "Image files must be type .png and less than 3mb in size";
         res.render('upload', {
             pageTitle,
-            fileError
+            fileError,
+            oldInput
         })
         return;
     } else if (Array.from(req.files).length % 2 === 1) {
         const fileError = "Odd number of files submitted ... please make sure you have both a preview and display image";
         res.render('upload', {
             pageTitle,
-            fileError
+            fileError,
+            oldInput
+        })
+        return;
+    } else if (Array.from(req.files).length > 80) {
+        const fileError = "Cannot submit more than 40 preview and display pairs";
+        res.render('upload', {
+            pageTitle,
+            fileError,
+            oldInput
         })
         return;
     } else if (filesNamesDoNotFollowPrescribedStructure(req.files)===true) {
         const fileError = "File names do not follow the prescribed strucutre ... please make sure file names follow pattern in example";
         res.render('upload', {
             pageTitle,
-            fileError
+            fileError,
+            oldInput
         })
         return;
     }
-
-    const apiKey = req.body.apiKey;
-    const spaceId = req.body.spaceId;
-    const mapId = req.body.mapId;
-    const replaceAll = req.body.replaceAll;
-    const imageArray = [];
 
     // TODO: big value add if we can convert PDFs to png files
     Array.from(req.files).forEach(file => {
@@ -115,7 +140,8 @@ exports.postUpload = (req, res) => {
             const alert = [{msg: error}]
             res.render('upload', {
                 pageTitle,
-                alert
+                alert,
+                oldInput
             })
             return;
         });
