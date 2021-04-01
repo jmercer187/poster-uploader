@@ -1,3 +1,4 @@
+const fs = require('fs/promises')
 const axios = require('axios');
 
 const postImage = async(img, spaceId) => {
@@ -15,8 +16,20 @@ const postImage = async(img, spaceId) => {
 const returnImageLinksArray = async(images, spaceId) => {  
     axiosPromiseArray = [];
     
-    //TODO: need to stage poster sprites and get URLs for those as well ... that'd probably happen around here?
-    
+    // we need these images of the poster board sprites stages as well
+    // this might not work???? do I need to wait for the file read promise to be resolved before kicking it up into the axios promise array?
+    // fs.readdir('./images/', (err, files) => {
+    //     files.forEach(file => {
+    //         let img = {
+    //             fileName: file,
+    //             data: fs.promises.readFile('./images/'+file, (err, data) => {
+    //                 if (err) throw err
+    //             })
+    //         }
+    //         images.push(img)
+    //     })
+    // })
+
     Array.from(images).forEach(img => {
         let axiosPromise = postImage(img, spaceId);
         axiosPromiseArray.push(axiosPromise);
