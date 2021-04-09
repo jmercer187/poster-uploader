@@ -75,17 +75,12 @@ const getCoordsArray = (roomX, roomY) => {
     return coords;
 }
 
-const buildPosterObject = (images) => {
+const buildPosterObject = (images, sprite) => {
     
     const previewRegex = /^\d{2}-P.+/
     const displayRegex = /^\d{2}-D.+/
     const preview = images.find(img => img.fileName.match(previewRegex));
     const display = images.find(img => img.fileName.match(displayRegex));
-
-    // need to also set the image for the poster object
-    // using background images from the default gather poster room .. dunno if this will work tho .. these links might be tied to that space specifically
-
-    let objImageIndex = Math.floor(Math.random() * Math.floor(6));
 
     const newPosterObject = {
             scale: 1,
@@ -97,8 +92,8 @@ const buildPosterObject = (images) => {
             offsetY: 0,
             offsetX: 0,
             type: 2,
-            highlighted: imageUtil.highlighted[objImageIndex],
-            normal: imageUtil.normal[objImageIndex],
+            highlighted: sprite.url,
+            normal: sprite.url,
             properties: {
                 preview: preview.url,
                 image: display.url
@@ -111,21 +106,38 @@ const buildPosterObject = (images) => {
 const buildUpdatedRoomObjectsArray = (currentObjects, images) => {
     
     const newObjects = [];
-    
-    // using a while loop??? a dangerous pastime, I know...
-    while (images.length > 0){
+
+    // need to separate the poster sprite images from the user images
+    const spriteRegex = /^___internalSprite___.+/
+    let userImages = []
+    let posterSprites = []
+    for (i=0;i<images.length;i++){
+        let fileName = images[i].fileName
+        if (fileName.match(spriteRegex)){
+            posterSprites.push(images[i])
+        } else {
+            userImages.push(images[i])
+        }
+    }
+
+    while (userImages.length > 0){
         // get an image
-        let image1 = images[0];
-        // ok we have it in play, kill it from the array
-        images.splice(0,1)
+        let image1 = userImages[0];
+        // ok we have it in play, pull it from the array
+        userImages.splice(0,1)
         // get the second image by matching on the digit prefix
-        let image2 = images.find(img => img.fileName.substring(0, 2) === image1.fileName.substring(0, 2))
-        // pull the second image out of the images array
-        let index = images.indexOf(image2);
-        images.splice(index,1)
+        let image2 = userImages.find(img => img.fileName.substring(0, 2) === image1.fileName.substring(0, 2))
+        // pull the second image out of the userImages array
+        let index = userImages.indexOf(image2);
+        userImages.splice(index,1)
         
         let imagePair = [image1, image2];
-        newObjects.push(buildPosterObject(imagePair));
+        
+        // get a random poster sprite URL
+        let objImageIndex = Math.floor(Math.random() * Math.floor(6));
+        let sprite = posterSprites[objImageIndex]
+
+        newObjects.push(buildPosterObject(imagePair, sprite));
     }
 
     if (currentObjects){
@@ -266,7 +278,6 @@ const updateRoom = (room, images, replaceExistingImages) => {
 
     // update the collisions array based on the new poster objects we've added
     const updatedCollisions = buildNewCollisionsString(updatedPosterObjectArray, room.portals, roomX, roomY);
-    console.log(updatedCollisions)
 
     // add in private spaces for each poster object we've got
     const updatedSpaces = builtUpdatedRoomSpacesArray(updatedPosterObjectArray);

@@ -1,6 +1,33 @@
 const fs = require('fs/promises')
 const axios = require('axios');
 
+const getImage = async(fileName) => {
+    let data = await fs.readFile('./images/'+fileName)
+    let image = {
+        fileName: "___internalSprite___" + fileName,
+        data: data
+    }
+    return image
+}
+
+const getImagePromiseArray = async() => {
+    let array = await Promise.resolve(fs.readdir('./images/'))
+        .then(fileNames => {
+            let imagePromiseArray = []
+            fileNames.forEach( file => {
+                let imagePromise = getImage(file)
+                imagePromiseArray.push(imagePromise)
+            })
+            return imagePromiseArray
+        })
+        .catch(err => console.log(err))
+
+    array = await Promise.all(array)
+        .then(results => {return results})
+
+    return array;
+}
+
 const postImage = async(img, spaceId) => {
     let response = await axios.post('https://gather.town/api/uploadImage', {
         spaceId: spaceId,
@@ -14,29 +41,21 @@ const postImage = async(img, spaceId) => {
 }
 
 const returnImageLinksArray = async(images, spaceId) => {  
-    axiosPromiseArray = [];
     
     // we need these images of the poster board sprites stages as well
-    // this might not work???? do I need to wait for the file read promise to be resolved before kicking it up into the axios promise array?
-    // fs.readdir('./images/', (err, files) => {
-    //     files.forEach(file => {
-    //         let img = {
-    //             fileName: file,
-    //             data: fs.promises.readFile('./images/'+file, (err, data) => {
-    //                 if (err) throw err
-    //             })
-    //         }
-    //         images.push(img)
-    //     })
-    // })
+    let posterSprites = await Promise.resolve(getImagePromiseArray())
+                                .catch(error => console.error('getting poster images failed ' + error))
 
-    Array.from(images).forEach(img => {
+    let allImages = images.concat(posterSprites)
+    
+    axiosPromiseArray = [];
+    Array.from(allImages).forEach(img => {
         let axiosPromise = postImage(img, spaceId);
         axiosPromiseArray.push(axiosPromise);
-    });
+    }); 
 
     const imgCallResults = await Promise.all(axiosPromiseArray)
-        .then(function(results) {
+        .then(results => {
             return results;
         })
         .catch(error => {
