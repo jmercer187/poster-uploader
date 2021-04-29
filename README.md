@@ -1,2 +1,2 @@
 # poster-uploader
-batch upload posters to gather town spaces API
+batch upload poster images to a gather town space using gather's REST API
